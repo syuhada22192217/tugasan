@@ -386,7 +386,7 @@ async function uploadRecording(level) {
     return;
   }
 
-  if (!UPLOAD_ENDPOINT || UPLOAD_ENDPOINT.indexOf('PASTE_YOUR_WEB_APP_EXEC_URL_HERE') !== -1) {
+  if (!UPLOAD_ENDPOINT || UPLOAD_ENDPOINT.indexOf('https://script.google.com/a/macros/moe-dl.edu.my/s/AKfycbxy9pwnVh46x-L4cXbAaTPzlZkB6g4hw-w3rf6i9nSmG51c8mnXvVg4cV9uU5XFkpipVQ/exec') !== -1) {
     setUploadStatus(level, 'The upload link has not been configured yet. Please tell your teacher.', 'note');
     return;
   }
