@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission 3 - Digital Audio Production</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --lav:#e5d9ff; --pink:#ffdce9; --yellow:#fff1b8;
+  --mint:#d4f5e6; --blue:#d9f0ff; --purple:#8b6bb3;
+  --wood:#bf8655; --wooddark:#7b4b2a; --ink:#57476d;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;padding:12px;background:
+  radial-gradient(circle at 10% 5%,#fff0f7,transparent 32%),
+  radial-gradient(circle at 90% 30%,#e4f7ff,transparent 34%),
+  linear-gradient(135deg,#f6efff,#fff9e9,#effff6);
+  color:var(--ink);font-family:'Nunito',sans-serif
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:3px solid #9875c5;outline-offset:3px
+}
+.shell{max-width:1050px;margin:auto;background:#fffdfd;border:4px solid white;border-radius:28px;overflow:hidden;box-shadow:0 12px 35px #77629a25}
+.hero{text-align:center;padding:25px 16px 22px;background:linear-gradient(130deg,var(--lav),var(--pink),var(--yellow));position:relative}
+.hero .pill{display:inline-block;background:#fff;border-radius:25px;padding:6px 13px;font-size:11px;font-weight:900;letter-spacing:1px;color:#9070b6}
+h1,h2,h3,p{margin-top:0}
+.hero h1{font:800 clamp(30px,5vw,48px)/1.05 'Baloo 2',cursive;color:#765394;text-shadow:2px 3px white;margin:12px 0}
+.hero p{font-size:14px;font-weight:800;line-height:1.6;margin-bottom:8px}
+.mascots{font-size:37px;letter-spacing:8px}
+.main{padding:22px 18px 28px}
+.sign-title{text-align:center;font:800 25px 'Baloo 2',cursive;color:#96633b;margin-bottom:5px}
+.hint{text-align:center;font-size:12px;font-weight:800;margin-bottom:22px}
+.signs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sign{
+  position:relative;min-width:0;min-height:180px;padding:17px 10px;
+  border:4px solid #87532f;border-radius:22px;color:#fff9e8;
+  background:repeating-linear-gradient(0deg,transparent 0 22px,#87532f16 23px 25px),linear-gradient(120deg,#d8a16c,#b87a47 50%,#d19a63);
+  box-shadow:inset 0 3px #f5d4aa,inset 0 -5px #8b552f,0 7px #e7d1bb;
+  text-align:center;transition:.18s
+}
+.sign:hover{transform:translateY(-4px) rotate(-1deg)}
+.sign.active{outline:4px solid white;box-shadow:0 0 0 7px #d6c3f1,0 7px #e7d1bb}
+.sign .animal{display:block;font-size:47px;line-height:1.1;margin-bottom:7px}
+.sign strong{display:block;font:800 22px/1.05 'Baloo 2',cursive;text-shadow:1px 2px #754322}
+.sign small{display:block;font-size:10px;font-weight:900;letter-spacing:.5px;line-height:1.5;margin-top:8px;color:#fff3ce}
+.sign .tab{position:absolute;width:28px;height:28px;right:-17px;top:calc(50% - 14px);border-radius:50%;border:4px solid #87532f;background:#c58a54;z-index:2}
+.sign:last-child .tab{display:none}
+.workspace{display:none;margin-top:27px;padding:20px;border:3px dashed #dfcdec;border-radius:23px;animation:show .25s ease}
+.workspace.show{display:block}
+@keyframes show{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.cub{background:linear-gradient(140deg,#fff8fc,#f4efff)}
+.hunter{background:linear-gradient(140deg,#f0fff8,#f0f8ff)}
+.king{background:linear-gradient(140deg,#fffbea,#fff0f6)}
+.heading{display:flex;align-items:center;gap:12px;margin-bottom:15px}
+.heading .emoji{font-size:43px}
+.heading h2{font:800 clamp(23px,4vw,30px)/1.1 'Baloo 2',cursive;margin:0;color:#8d6bb5}
+.hunter .heading h2{color:#3d977c}.king .heading h2{color:#b98032}
+.heading p{font-size:12px;font-weight:800;margin:5px 0 0}
+.instruction{background:white;border:2px solid #eadff5;border-radius:15px;padding:13px 15px;font-size:13px;line-height:1.7;font-weight:800;margin-bottom:17px}
+.section-title{font:800 20px 'Baloo 2',cursive;margin-bottom:10px}
+.tip{font-size:12px;font-weight:800;line-height:1.6}
+.word-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.word-card{border:2px solid #e6d9f4;background:white;border-radius:16px;padding:12px;text-align:center;min-width:0}
+.word-card .pic{font-size:34px;display:block}
+.word-card strong{display:block;font-size:15px;margin:4px 0}
+.word-card small{display:block;font-size:11px;font-weight:800;color:#8b78a3;margin-bottom:9px}
+.btn{display:inline-block;border:0;border-radius:30px;padding:11px 16px;font-weight:900;box-shadow:0 4px #00000012;transition:.15s;text-decoration:none}
+.btn:hover{transform:translateY(-2px)}
+.purple{background:#dfd1ff;color:#574073}
+.green{background:#d3f4e4;color:#276e57}
+.pink{background:#ffdfec;color:#884968}
+.yellow{background:#fff0b5;color:#795b1f}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.status{display:none;margin-top:13px;border-radius:13px;padding:12px;font-size:13px;line-height:1.6;font-weight:900;overflow-wrap:anywhere}
+.status.show{display:block}
+.status.good{background:#e0f8e9;color:#286747}
+.status.note{background:#fff1c7;color:#805b19}
+.audio-box{margin-top:17px;padding:15px;background:#fff;border:2px solid #e4d9f4;border-radius:17px}
+.audio-box h3{font:800 18px 'Baloo 2',cursive;margin-bottom:7px}
+audio{width:100%;margin-top:10px}
+.rec-status{font-size:12px;font-weight:900;line-height:1.6;margin-top:9px}
+.rec-indicator{display:inline-block;width:9px;height:9px;border-radius:50%;background:#aaa;margin-right:5px}
+.rec-indicator.on{background:#f05a7e;box-shadow:0 0 0 5px #ffdbe6}
+.beat-panel{text-align:center;padding:17px;border-radius:18px;background:#fff;border:2px solid #cceedd}
+.beat-number{font:800 44px 'Baloo 2',cursive;color:#4a9d80}
+.beat-label{font-size:11px;font-weight:900;letter-spacing:1px}
+.beat-lights{display:flex;justify-content:center;gap:10px;margin:12px 0}
+.beat-light{width:19px;height:19px;border-radius:50%;background:#d7f1e6}
+.beat-light.on{background:#65c99d;box-shadow:0 0 0 5px #dff8ec}
+.line-card{border:2px solid #bde6d5;background:white;border-radius:16px;padding:14px;margin-bottom:10px}
+.line-card p{font:700 18px/1.5 'Baloo 2',cursive;margin:0}
+.formula{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.formula span{padding:8px 11px;border-radius:12px;font-size:11px;font-weight:900}
+.formula span:nth-child(1){background:var(--lav)}
+.formula span:nth-child(2){background:var(--pink)}
+.formula span:nth-child(3){background:var(--yellow)}
+.label{display:block;font-size:12px;font-weight:900;margin:13px 0 6px}
+.text-input,.lyric-input{width:100%;border:2px solid #e7d7b0;background:white;border-radius:13px;padding:12px;color:var(--ink);font-weight:700}
+.lyric-input{min-height:85px;resize:vertical}
+.footer{text-align:center;padding:16px;background:#f8f0ff;color:#9275b0;font-size:12px;font-weight:900;line-height:1.7}
+
+/* Backup instructions and downloadable recordings */
+.backup-panel{margin-top:15px;padding:15px;border:2px dashed #d6b9ec;border-radius:16px;background:#fff7fd}
+.backup-panel h4{font:800 18px 'Baloo 2',cursive;color:#8052a1;margin:0 0 7px}
+.backup-panel p,.backup-panel li{font-size:12px;font-weight:800;line-height:1.7}
+.backup-panel ol{padding-left:22px}
+.backup-panel textarea{width:100%;min-height:65px;padding:10px;border:2px solid #e4d6f1;border-radius:10px;color:var(--ink);resize:vertical}
+.backup-panel .backup-message{margin:8px 0 0}
+.download-link{display:inline-block;margin-top:10px;padding:10px 14px;background:#d3f4e4;color:#276e57;border-radius:24px;text-decoration:none;font-size:12px;font-weight:900}
+@media(max-width:720px){
+ body{padding:6px}.main{padding:17px 12px}
+ .signs{grid-template-columns:1fr;gap:14px}
+ .sign{min-height:105px;display:grid;grid-template-columns:62px 1fr;grid-template-rows:auto auto;column-gap:10px;text-align:left;align-items:center;padding:12px 15px}
+ .sign .animal{grid-row:1/3;margin:0;text-align:center;font-size:42px}
+ .sign strong{font-size:22px}.sign small{margin-top:4px}
+ .sign .tab{width:24px;height:24px;right:calc(50% - 12px);top:auto;bottom:-16px}
+ .word-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .workspace{padding:13px}.hero{padding:23px 10px}
+}
+@media(max-width:380px){.word-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<header class="hero">
+  <span class="pill">🌈 DIFFERENTIATED PRODUCTION • STEP 3</span>
+  <h1>MISSION 3:<br>CHOOSE YOUR LEVEL!</h1>
+  <p>Welcome, little jungle explorers!<br>Listen, speak, and let your voice shine! ✨</p>
+  <div class="mascots">🐾 🎵 🐆 🎤 🦁</div>
+</header>
+
+<main class="main">
+  <h2 class="sign-title">🪵 The Enchanted Jungle Signboard</h2>
+  <p class="hint">Choose your wooden puzzle sign to unlock your audio mission! 🌿</p>
+
+  <div class="signs">
+    <button class="sign" type="button" aria-expanded="false" onclick="openLevel('cub',this)">
+      <span class="animal">🐾</span><strong>CUB LEVEL</strong>
+      <small>LISTEN • ECHO • SPEAK</small><span class="tab"></span>
+    </button>
+    <button class="sign" type="button" aria-expanded="false" onclick="openLevel('hunter',this)">
+      <span class="animal">🐆</span><strong>HUNTER LEVEL</strong>
+      <small>LISTEN • SPEAK • CHANT</small><span class="tab"></span>
+    </button>
+    <button class="sign" type="button" aria-expanded="false" onclick="openLevel('king',this)">
+      <span class="animal">🦁</span><strong>LION KING LEVEL</strong>
+      <small>CREATE • TAP • PERFORM</small>
+    </button>
+  </div>
+
+  <section id="cub-workspace" class="workspace cub">
+    <div class="heading"><span class="emoji">🐾</span><div><h2>Tier 1: The Echo Chamber</h2><p>Remedial • Adjective Pronunciation & Intonation</p></div></div>
+    <div class="instruction">🌸 <strong>Welcome to the Cub Level!</strong><br>Listen carefully to each jungle word. Press the speaker button to hear the model pronunciation. Then record your voice and say the word clearly like an echo!</div>
+    <h3 class="section-title">🎧 Listen and Echo!</h3>
+    <p class="tip">Tap a word to hear it. Practise one word at a time.</p>
+    <div class="word-grid">
+      <div class="word-card"><span class="pic">🐺</span><strong>Strong!</strong><small>Wolf pack</small><button class="btn purple" onclick="sayWord('Strong!')">🔊 Listen</button></div>
+      <div class="word-card"><span class="pic">🦁</span><strong>Loud!</strong><small>Roaring lion</small><button class="btn purple" onclick="sayWord('Loud!')">🔊 Listen</button></div>
+      <div class="word-card"><span class="pic">🐻</span><strong>Big!</strong><small>Big bear</small><button class="btn purple" onclick="sayWord('Big!')">🔊 Listen</button></div>
+      <div class="word-card"><span class="pic">🐆</span><strong>Fast!</strong><small>Fast panther</small><button class="btn purple" onclick="sayWord('Fast!')">🔊 Listen</button></div>
+      <div class="word-card"><span class="pic">🐒</span><strong>Happy!</strong><small>Happy monkey</small><button class="btn purple" onclick="sayWord('Happy!')">🔊 Listen</button></div>
+      <div class="word-card"><span class="pic">🐣</span><strong>Small!</strong><small>Little cubs</small><button class="btn purple" onclick="sayWord('Small!')">🔊 Listen</button></div>
+    </div>
+    <div class="audio-box">
+      <h3>🎤 My Echo Recording Studio</h3>
+      <label class="label" for="cub-name">Your Name</label>
+      <input class="text-input" id="cub-name" maxlength="60" placeholder="Type your name...">
+      <p class="tip">1. Press Start Recording. 2. Say the six words. 3. Stop and listen to your recording.</p>
+      <div class="controls">
+        <button class="btn pink" onclick="startRecording('cub')">🎙️ Start Recording</button>
+        <button class="btn yellow" onclick="stopRecording('cub')">⏹ Stop Recording</button>
+      </div>
+      <div class="rec-status" id="cub-rec-status"><span class="rec-indicator"></span>Ready to record your voice!</div>
+      <audio id="cub-playback" controls hidden></audio>
+      <div id="cub-download"></div>
+      <div class="controls"><button class="btn purple" type="button" onclick="uploadRecording('cub')">☁️ Submit Audio to Teacher</button></div>
+      <div class="status" id="cub-upload-status" role="status" aria-live="polite"></div>
+      <p class="tip">⭐ Tip: Say each word clearly. Try to copy the model's sounds.</p>
+      <div id="cub-backup" class="backup-panel" hidden></div>
+    </div>
+    <div id="cub-feedback" class="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <section id="hunter-workspace" class="workspace hunter">
+    <div class="heading"><span class="emoji">🐆</span><div><h2>Tier 2: The Rhythm Sync Challenge</h2><p>Average • Sentence Fluency & Rhythm Awareness</p></div></div>
+    <div class="instruction">🌿 <strong>Welcome to the Hunter Level!</strong><br>Listen to the model line, then record yourself saying the sentence clearly and smoothly.</div>
+    <div class="line-card"><span class="label">🎵 YOUR CHANT LINE</span><p>There are big lions roaring loudly!</p><div class="controls"><button class="btn green" onclick="sayWord('There are big lions roaring loudly!')">🔊 Hear Model Line</button></div></div>
+    <div class="audio-box">
+      <h3>🎤 Record Your Rhythm Chant</h3>
+      <label class="label" for="hunter-name">Your Name</label>
+      <input class="text-input" id="hunter-name" maxlength="60" placeholder="Type your name..."><p class="tip">Listen to the model line first. Then record yourself saying the whole sentence clearly.</p>
+      <div class="controls"><button class="btn green" onclick="startRecording('hunter')">🎙️ Start Recording</button><button class="btn yellow" onclick="stopRecording('hunter')">⏹ Stop Recording</button></div>
+      <div class="rec-status" id="hunter-rec-status"><span class="rec-indicator"></span>Ready to record your chant!</div>
+      <audio id="hunter-playback" controls hidden></audio><div id="hunter-download"></div>
+      <div class="controls"><button class="btn purple" type="button" onclick="uploadRecording('hunter')">☁️ Submit Audio to Teacher</button></div>
+      <div class="status" id="hunter-upload-status" role="status" aria-live="polite"></div>
+      <div id="hunter-backup" class="backup-panel" hidden></div>
+    </div>
+    <div id="hunter-feedback" class="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <section id="king-workspace" class="workspace king">
+    <div class="heading"><span class="emoji">🦁</span><div><h2>Tier 3: The Jungle Chant Master</h2><p>Enrichment • Creative Rhythm & Expressive Intonation</p></div></div>
+    <div class="instruction">👑 <strong>Welcome, Jungle Song Master!</strong><br>Create one brand-new jungle song line using your own animal and describing word. Perform it with dramatic word stress and make your own beat by tapping a desk or pencil!</div>
+    <h3 class="section-title">✨ 1. Create Your New Lyric</h3>
+    <div class="formula"><span>ADJECTIVE</span><span>+</span><span>ANIMAL</span><span>+</span><span>ACTION VERB</span></div>
+    <p class="tip">Example: “There are playful pandas dancing happily!”</p>
+    <label class="label" for="king-name">Your Name</label>
+    <input class="text-input" id="king-name" maxlength="60" placeholder="Type your name...">
+    <label class="label" for="king-lyric">Your Original Jungle Song Line</label>
+    <textarea class="lyric-input" id="king-lyric" maxlength="250" placeholder="There are ... animals ..."></textarea>
+    <div class="controls"><button class="btn yellow" onclick="previewLyric()">🎵 Preview My Lyric</button></div>
+    <div id="king-preview" class="status" role="status" aria-live="polite"></div>
+    <h3 class="section-title" style="margin-top:22px">🥁 2. Make Your Own Beat</h3>
+    <div class="beat-panel"><div class="beat-label">YOUR RHYTHM • TAP ALONG</div><div class="beat-number" id="tap-count">0</div><p class="tip">Tap the button each time you make a beat with your desk or pencil!</p><div class="controls" style="justify-content:center"><button class="btn green" onclick="countTap()">🥁 Tap My Beat!</button><button class="btn pink" onclick="resetTap()">🔄 Reset</button></div></div>
+    <div class="audio-box">
+      <h3>🎤 3. Record Your Performance</h3><p class="tip">Say your original line with expressive intonation. Emphasise the adjective or action word and perform your own beat.</p>
+      <div class="controls"><button class="btn pink" onclick="startRecording('king')">🎙️ Start Recording</button><button class="btn yellow" onclick="stopRecording('king')">⏹ Stop Recording</button></div>
+      <div class="rec-status" id="king-rec-status"><span class="rec-indicator"></span>Ready for your performance!</div>
+      <audio id="king-playback" controls hidden></audio><div id="king-download"></div>
+<div class="controls"><button class="btn purple" type="button" onclick="uploadRecording('king')">☁️ Submit Audio to Teacher</button></div>
+<div class="status" id="king-upload-status" role="status" aria-live="polite"></div>
+      <div id="king-backup" class="backup-panel" hidden></div>
+    </div>
+    <p class="tip" style="margin-top:15px">🌟 Challenge: Can you perform your line with clear pronunciation, dramatic word stress and a steady beat?</p>
+  </section>
+</main>
+
+<footer class="footer">🌸 LISTEN • SPEAK • RECORD • CREATE 🌸<br>Every voice is special. Let your jungle song shine! ✨</footer>
+</div>
+
+<script>
+// Paste the deployed Apps Script Web App URL ending in /exec here.
+const UPLOAD_ENDPOINT = "https://script.google.com/a/macros/moe-dl.edu.my/s/AKfycbxy9pwnVh46x-L4cXbAaTPzlZkB6g4hw-w3rf6i9nSmG51c8mnXvVg4cV9uU5XFkpipVQ/exec";
+
+function openLevel(level, button) {
+  document.querySelectorAll('.workspace').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.sign').forEach(el => {
+    el.classList.remove('active');
+    el.setAttribute('aria-expanded', 'false');
+  });
+  document.getElementById(level + '-workspace').classList.add('show');
+  button.classList.add('active');
+  button.setAttribute('aria-expanded', 'true');
+  setTimeout(() => document.getElementById(level + '-workspace').scrollIntoView({behavior:'smooth',block:'start'}), 80);
+}
+
+function sayWord(text) {
+  if (!('speechSynthesis' in window)) {
+    alert('Audio speech is not supported in this browser. Please ask your teacher for help.');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-GB';
+  utterance.rate = 0.78;
+  utterance.pitch = 1.08;
+  window.speechSynthesis.speak(utterance);
+}
+
+var recorders = {}, streams = {}, chunks = {}, recordingUrls = {}, recordingBlobs = {};
+
+var practiceTexts = {
+  cub: 'Strong! Loud! Big! Fast! Happy! Small!',
+  hunter: 'There are big lions roaring loudly!',
+  king: ''
+};
+
+function getPracticeText(level) {
+  if (level === 'king') {
+    return document.getElementById('king-lyric').value.trim() ||
+      'Write your original jungle chant here.';
+  }
+  return practiceTexts[level];
+}
+
+function showBackup(level, reason) {
+  var panel = document.getElementById(level + '-backup');
+  if (!panel) return;
+
+  panel.hidden = false;
+  panel.innerHTML = '';
+
+  var title = document.createElement('h4');
+  title.textContent = '📱 Let’s try another way!';
+  panel.appendChild(title);
+
+  var message = document.createElement('p');
+  message.textContent = reason ||
+    'The microphone cannot be used in this page right now.';
+  panel.appendChild(message);
+
+  var instructions = document.createElement('ol');
+  [
+    'Open the Voice Recorder or Voice Memos app on your device. On a computer, use an available sound-recording app.',
+    'Return to this activity if needed, and read the practice text below.',
+    'Record your voice in the recorder app, then stop and listen to your recording.',
+    'Save the audio file and submit it to your teacher using the method your teacher has provided.'
+  ].forEach(function(item) {
+    var li = document.createElement('li');
+    li.textContent = item;
+    instructions.appendChild(li);
+  });
+  panel.appendChild(instructions);
+
+  var label = document.createElement('label');
+  label.className = 'label';
+  label.textContent = '📝 Your practice text';
+  panel.appendChild(label);
+
+  var field = document.createElement('textarea');
+  field.value = getPracticeText(level);
+  field.setAttribute('aria-label', 'Practice text to record');
+  panel.appendChild(field);
+
+  var copyButton = document.createElement('button');
+  copyButton.type = 'button';
+  copyButton.className = 'btn purple';
+  copyButton.textContent = '📋 Copy Practice Text';
+  copyButton.addEventListener('click', async function() {
+    try {
+      await navigator.clipboard.writeText(field.value);
+      backupMessage.textContent = 'Text copied! Paste it into your notes if needed.';
+    } catch (e) {
+      field.focus();
+      field.select();
+      backupMessage.textContent = 'Select the text and copy it manually.';
+    }
+  });
+  panel.appendChild(copyButton);
+
+  var backupMessage = document.createElement('p');
+  backupMessage.className = 'backup-message';
+  backupMessage.setAttribute('aria-live', 'polite');
+  panel.appendChild(backupMessage);
+
+  var note = document.createElement('p');
+  note.textContent = 'Note: This button cannot open or start the device recorder automatically. You need to open that app yourself.';
+  panel.appendChild(note);
+}
+
+function addDownloadLink(level, url) {
+  var container = document.getElementById(level + '-download');
+  container.replaceChildren();
+
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = level + '-jungle-recording.webm';
+  link.className = 'download-link';
+  link.textContent = '⬇️ Download My Recording';
+  container.appendChild(link);
+
+  var note = document.createElement('p');
+  note.className = 'tip';
+  note.textContent = 'You can download a copy, or use “Submit Audio to Teacher” to send it to the class Drive folder.';
+  container.appendChild(note);
+}
+
+
+function setUploadStatus(level, message, kind) {
+  var el = document.getElementById(level + '-upload-status');
+  if (!el) return;
+  el.className = 'status show ' + (kind || 'note');
+  el.textContent = message;
+}
+
+async function uploadRecording(level) {
+  var blob = recordingBlobs[level];
+  if (!blob || !blob.size) {
+    setUploadStatus(level, 'Please record and stop your audio before submitting it.', 'note');
+    return;
+  }
+
+  var nameField = document.getElementById(level + '-name') ||
+                  document.getElementById('king-name');
+  var studentName = nameField ? nameField.value.trim() : '';
+  if (!studentName) {
+    setUploadStatus(level, 'Please type your name before submitting the recording.', 'note');
+    if (nameField) nameField.focus();
+    return;
+  }
+
+  if (!UPLOAD_ENDPOINT || UPLOAD_ENDPOINT.indexOf('PASTE_YOUR_WEB_APP_EXEC_URL_HERE') !== -1) {
+    setUploadStatus(level, 'The upload link has not been configured yet. Please tell your teacher.', 'note');
+    return;
+  }
+
+  if (blob.size > 6 * 1024 * 1024) {
+    setUploadStatus(level, 'This recording is too large. Please record a shorter audio clip (under 6 MB).', 'note');
+    return;
+  }
+
+  setUploadStatus(level, 'Sending your audio… please do not close this page yet.', 'note');
+  try {
+    var dataUrl = await new Promise(function(resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function() { resolve(String(reader.result || '')); };
+      reader.onerror = function() { reject(new Error('Could not read the audio file.')); };
+      reader.readAsDataURL(blob);
+    });
+    var base64 = dataUrl.substring(dataUrl.indexOf(',') + 1);
+    var lyric = level === 'king'
+      ? (document.getElementById('king-lyric').value.trim() || '')
+      : (level === 'hunter' ? 'There are big lions roaring loudly!' : 'Strong! Loud! Big! Fast! Happy! Small!');
+
+    // Apps Script does not expose configurable CORS headers for this web-app response.
+    // A simple text/plain POST with no-cors lets the upload request reach doPost,
+    // but the browser cannot read the response. The page therefore tells the user
+    // to check with the teacher/Drive rather than claiming a verified server response.
+    await fetch(UPLOAD_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+      body: JSON.stringify({
+        studentName: studentName,
+        level: level,
+        mimeType: (blob.type || 'audio/webm').split(';')[0],
+        base64: base64,
+        lyric: lyric
+      })
+    });
+    setUploadStatus(level, 'Submission request sent. Please keep this page open briefly. Your teacher should confirm that the audio appears in the class Drive folder.', 'good');
+  } catch (error) {
+    setUploadStatus(level, 'Could not send the audio. Check your internet connection and try again. If it keeps failing, tell your teacher.', 'note');
+  }
+}
+async function startRecording(level) {
+  var panel = document.getElementById(level + '-backup');
+  if (panel) panel.hidden = true;
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia ||
+      !window.MediaRecorder) {
+    setRecordStatus(level, 'Recording is unavailable in this page or browser. Use the backup instructions below.', false);
+    showBackup(level, 'This browser or embedded page does not support direct recording.');
+    return;
+  }
+
+  if (recorders[level] && recorders[level].state === 'recording') {
+    setRecordStatus(level, 'Your recording is already in progress. Press Stop Recording when finished.', true);
+    return;
+  }
+
+  try {
+    var stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    streams[level] = stream;
+    chunks[level] = [];
+
+    var options = {};
+    if (MediaRecorder.isTypeSupported &&
+        MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+      options.mimeType = 'audio/webm;codecs=opus';
+    }
+
+    var recorder = new MediaRecorder(stream, options);
+    recorders[level] = recorder;
+
+    recorder.ondataavailable = function(event) {
+      if (event.data && event.data.size > 0) chunks[level].push(event.data);
+    };
+
+    recorder.onerror = function() {
+      setRecordStatus(level, 'A recording error occurred. Please try again or use the backup instructions.', false);
+      showBackup(level, 'The browser encountered a recording error.');
+    };
+
+    recorder.onstop = function() {
+      var mime = recorder.mimeType || 'audio/webm';
+      var blob = new Blob(chunks[level], {type:mime});
+      recordingBlobs[level] = blob;
+      var url = URL.createObjectURL(blob);
+
+      if (recordingUrls[level]) URL.revokeObjectURL(recordingUrls[level]);
+      recordingUrls[level] = url;
+
+      var audio = document.getElementById(level + '-playback');
+      audio.src = url;
+      audio.hidden = false;
+      audio.load();
+      addDownloadLink(level, url);
+
+      if (streams[level]) {
+        streams[level].getTracks().forEach(track => track.stop());
+        streams[level] = null;
+      }
+
+      setRecordStatus(level, 'Recording ready! Press Play, download it, or submit it to your teacher.', false);
+      setUploadStatus(level, 'Your recording is ready to submit.', 'note');
+      var feedback = document.getElementById(level + '-feedback');
+      if (feedback) {
+        feedback.className = 'status show good';
+        feedback.textContent = '🎉 Great effort! Listen to your recording and practise again if needed.';
+      }
+    };
+
+    recorder.start();
+    setRecordStatus(level, 'Recording... Speak clearly. Press Stop Recording when you finish.', true);
+  } catch (error) {
+    var message = 'The microphone could not be accessed.';
+
+    if (error && error.name === 'NotAllowedError') {
+      message = 'Microphone permission was blocked. Check your browser or device microphone settings.';
+    } else if (error && error.name === 'NotFoundError') {
+      message = 'No microphone was detected. Check that your device has a microphone connected.';
+    } else if (error && error.name === 'NotReadableError') {
+      message = 'The microphone may be in use by another app. Close other recording or calling apps and try again.';
+    } else if (error && error.name === 'SecurityError') {
+      message = 'The browser security settings blocked microphone access in this embedded page.';
+    }
+
+    setRecordStatus(level, message + ' Use the backup instructions below.', false);
+    showBackup(level, message);
+  }
+}
+
+function stopRecording(level) {
+  var recorder = recorders[level];
+  if (recorder && recorder.state === 'recording') {
+    recorder.stop();
+  } else {
+    setRecordStatus(level, 'No recording is in progress yet. Press Start Recording first.', false);
+  }
+}
+
+function setRecordStatus(level, message, active) {
+  var el = document.getElementById(level + '-rec-status');
+  if (!el) return;
+  el.replaceChildren();
+  var dot = document.createElement('span');
+  dot.className = 'rec-indicator' + (active ? ' on' : '');
+  el.appendChild(dot);
+  el.appendChild(document.createTextNode(message));
+}
+
+var audioContext = null;
+
+function playClick(accent) {
+  try {
+    var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    if (!audioContext) audioContext = new AudioContextClass();
+    if (audioContext.state === "suspended") audioContext.resume();
+    var osc = audioContext.createOscillator();
+    var gain = audioContext.createGain();
+    osc.type = "sine";
+    osc.frequency.value = accent ? 880 : 620;
+    gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.18, audioContext.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.12);
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    osc.start();
+    osc.stop(audioContext.currentTime + 0.13);
+  } catch (e) { /* Visual tap count remains available if audio is blocked. */ }
+}
+
+function previewLyric() {
+  var name = document.getElementById('king-name').value.trim();
+  var lyric = document.getElementById('king-lyric').value.trim();
+  var box = document.getElementById('king-preview');
+  box.className = 'status show ' + (name && lyric ? 'good' : 'note');
+  box.textContent = name && lyric
+    ? '👑 ' + name + '’s Jungle Chant: “' + lyric + '” — now add your beat and record your performance!'
+    : '🌼 Add your name and write your original jungle song line first.';
+}
+
+var taps = 0;
+function countTap() {
+  taps++;
+  document.getElementById('tap-count').textContent = taps;
+  playClick(taps % 4 === 1);
+}
+function resetTap() {
+  taps = 0;
+  document.getElementById('tap-count').textContent = '0';
+}
+</script>
+</body>
+</html>
